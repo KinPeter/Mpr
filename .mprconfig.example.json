@@ -1,0 +1,24 @@
+{
+  "profiles": [
+    {
+      "name": "Default",
+      "shortName": "Default",
+      "isDefault": true,
+      "abbreviation": "",
+      "keywords": ["mpr0"],
+      "bindings": {
+        "left": "",
+        "right": "",
+        "middle": "",
+        "leftSideFirst": "",
+        "leftSideSecond": "",
+        "leftSideFarDown": "",
+        "topLeftFirst": "",
+        "topLeftSecond": "",
+        "topMiddleSmall": "",
+        "wheelRight": "",
+        "wheelLeft": ""
+      }
+    }
+  ]
+}
