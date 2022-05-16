@@ -16,6 +16,9 @@ export function readConfigFile(homeDir: string): MprConfig {
     const rawData = fs.readFileSync(configPath)
     const config: MprConfig = JSON.parse(rawData.toString())
     validateConfigFile(config)
+    config.profiles.forEach(profile => {
+      logger.cyan(`Profile found: ${profile.name}`)
+    })
     return config
   } catch (e) {
     logger.red('Could not parse config file.')
@@ -45,7 +48,7 @@ function validateConfigFile(config: MprConfig): void {
         !keywords?.length ||
         keywords.some(word => typeof word !== 'string') ||
         !bindings ||
-        !Object.values(bindings).some(binding => typeof binding !== 'string')
+        Object.values(bindings).some(binding => typeof binding !== 'string')
       ) {
         logger.red(`Invalid profile on index ${index}`)
         process.exit(1)

@@ -1,10 +1,7 @@
 import { GameProfile } from './types'
 
 export function generateMainScript(profiles: GameProfile[]): string {
-  console.log(profiles)
-
-  let content = `
-#!/bin/bash
+  let content = `#!/bin/bash
 
 g502mouseName=""
 
@@ -12,15 +9,13 @@ function mpr {
   local profile=$1
 
   if [[ $# == 0 ]]; then
-    mpr-get
-  `
+    mpr-get`
 
   profiles.forEach(({ isDefault, abbreviation, shortName }) => {
     if (isDefault) return
     content += `
   elif [[ $profile == "${abbreviation}" ]]; then
-    mpr-configureAndSet${shortName}
-    `
+    mpr-configureAndSet${shortName}`
   })
 
   content += `
@@ -81,19 +76,18 @@ function mpr-get {
 # 9 wheel right
 # 10 wheel left
 
-g502defaultProfile=(
-  "button 1"
-  "button 2"
-  "button 3"
-  "button 4"
-  "macro +KEY_LEFTMETA KEY_A -KEY_LEFTMETA"
-  "macro +KEY_LEFTCTRL KEY_S -KEY_LEFTCTRL"
-  "macro +KEY_LEFTCTRL KEY_C -KEY_LEFTCTRL"
-  "macro +KEY_LEFTCTRL KEY_V -KEY_LEFTCTRL"
-  "macro +KEY_LEFTALT KEY_F2 -KEY_LEFTALT"
-  "macro +KEY_LEFTCTRL +KEY_LEFTMETA KEY_RIGHT -KEY_LEFTMETA -KEY_LEFTCTRL"
-  "macro +KEY_LEFTCTRL +KEY_LEFTMETA KEY_LEFT -KEY_LEFTMETA -KEY_LEFTCTRL"
-)
+`
+
+  profiles.forEach(profile => {
+    if (profile.isDefault) {
+      content += `g502defaultProfile=(\n`
+
+      Object.values(profile.bindings).forEach(binding => {
+        content += `  "${binding}"\n`
+      })
+
+      content += `)
+
 function mpr-resetDefault {
   getMyMouseName
   for i in \${!g502defaultProfile[@]};
@@ -101,104 +95,30 @@ function mpr-resetDefault {
     echo "ratbagctl $g502mouseName profile 0 button $i action set \${g502defaultProfile[$i]}"
   done
   echo "Default profile buttons configured"
-}
+})\n`
+    } else {
+      content += `
+g502Profile${profile.shortName}=(
+`
+      Object.values(profile.bindings).forEach(binding => {
+        content += `  "${binding}"\n`
+      })
 
-g502ProfileSolo=(
-  "button 1"
-  "button 2"
-  "button 3"
-  "macro +KEY_LEFTALT KEY_X -KEY_LEFTALT"
-  "macro +KEY_LEFTALT KEY_Q -KEY_LEFTALT"
-  "macro KEY_7"
-  "macro +KEY_LEFTALT KEY_E -KEY_LEFTALT"
-  "macro +KEY_LEFTALT KEY_R -KEY_LEFTALT"
-  "macro KEY_8"
-  "macro KEY_Z"
-  "macro KEY_R"
-)
-function mpr-configureAndSetSolo {
+      content += `)
+
+function mpr-configureAndSet${profile.shortName} {
   getMyMouseName
-  for i in \${!g502ProfileSolo[@]};
+  for i in \${!g502Profile${profile.shortName}[@]};
   do
-    ratbagctl $g502mouseName profile 1 button $i action set \${g502ProfileSolo[$i]}
+    ratbagctl $g502mouseName profile 1 button $i action set \${g502Profile${profile.shortName}[$i]}
   done
   echo "Profile 1 buttons configured"
-  echo "Swords of Legends Online" > $HOME/.g502gameprofile
+  echo "${profile.name}" > $HOME/.g502gameprofile
   mpr-set 1
 }
-
-g502ProfileCyberpunk=(
-  "button 1"
-  "button 2"
-  "button 3"
-  "macro KEY_C"
-  "macro KEY_M"
-  "macro KEY_F"
-  "button 3"
-  "macro KEY_X"
-  "button 3"
-  "macro KEY_CAPSLOCK"
-  "macro KEY_CAPSLOCK"
-)
-function mpr-configureAndSetCyberpunk {
-  getMyMouseName
-  for i in \${!g502ProfileCyberpunk[@]};
-  do
-    ratbagctl $g502mouseName profile 1 button $i action set \${g502ProfileCyberpunk[$i]}
-  done
-  echo "Profile 1 buttons configured"
-  echo "Cyberpunk 2077" > $HOME/.g502gameprofile
-  mpr-set 1
-}
-
-g502ProfileGuildWars2=(
-  "button 1"
-  "button 2"
-  "button 3"
-  "macro KEY_NUMLOCK"
-  "macro KEY_M"
-  "macro +KEY_LEFTSHIFT KEY_F -KEY_LEFTSHIFT"
-  "macro KEY_6"
-  "macro KEY_7"
-  "macro +KEY_LEFTSHIFT KEY_F -KEY_LEFTSHIFT"
-  "macro KEY_9"
-  "macro KEY_8"
-)
-function mpr-configureAndSetGuildWars2 {
-  getMyMouseName
-  for i in \${!g502ProfileGuildWars2[@]};
-  do
-    ratbagctl $g502mouseName profile 1 button $i action set \${g502ProfileGuildWars2[$i]}
-  done
-  echo "Profile 1 buttons configured"
-  echo "GuildWars 2" > $HOME/.g502gameprofile
-  mpr-set 1
-}
-
-g502ProfileSWBattlefront2=(
-  "button 1"
-  "button 2"
-  "button 3"
-  "macro KEY_V"
-  "macro KEY_R"
-  "button 6"
-  "macro KEY_5"
-  "macro KEY_4"
-  "button 9"
-  "macro KEY_E"
-  "macro KEY_Q"
-)
-function mpr-configureAndSetSWBattlefront2 {
-  getMyMouseName
-  for i in \${!g502ProfileSWBattlefront2[@]};
-  do
-    ratbagctl $g502mouseName profile 1 button $i action set \${g502ProfileSWBattlefront2[$i]}
-  done
-  echo "Profile 1 buttons configured"
-  echo "SW Battlefront 2" > $HOME/.g502gameprofile
-  mpr-set 1
-}
-  `
+`
+    }
+  })
 
   return content
 }

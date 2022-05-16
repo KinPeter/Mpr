@@ -17,19 +17,19 @@ export interface LoggerInstance {
 function getInstance(module?: string): LoggerInstance {
   return {
     red(message: string | unknown): void {
-      console.log(chalkRedBright(`[${module}] ${message}`))
+      console.log(chalkRedBright(`[MPR:${module}] ${message}`))
     },
     green(message: string | unknown): void {
-      console.log(chalkGreen(`[${module}] ${message}`))
+      console.log(chalkGreen(`[MPR:${module}] ${message}`))
     },
     blue(message: string | unknown): void {
-      console.log(chalkBlueBright(`[${module}] ${message}`))
+      console.log(chalkBlueBright(`[MPR:${module}] ${message}`))
     },
     cyan(message: string | unknown): void {
-      console.log(chalkCyan(`[${module}] ${message}`))
+      console.log(chalkCyan(`[MPR:${module}] ${message}`))
     },
     def(message: string | unknown): void {
-      console.log(`[${module}] ${message}`)
+      console.log(`[MPR:${module}] ${message}`)
     },
     linebreak(): void {
       console.log('\n')

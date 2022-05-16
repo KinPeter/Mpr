@@ -7,17 +7,36 @@
       "abbreviation": "",
       "keywords": ["mpr0"],
       "bindings": {
-        "left": "",
-        "right": "",
-        "middle": "",
-        "leftSideFirst": "",
-        "leftSideSecond": "",
-        "leftSideFarDown": "",
-        "topLeftFirst": "",
-        "topLeftSecond": "",
-        "topMiddleSmall": "",
-        "wheelRight": "",
-        "wheelLeft": ""
+        "left": "button 1",
+        "right": "button 2",
+        "middle": "button 3",
+        "leftSideFirst": "button 4",
+        "leftSideSecond": "macro +KEY_LEFTMETA KEY_A -KEY_LEFTMETA",
+        "leftSideFarDown": "macro +KEY_LEFTCTRL KEY_S -KEY_LEFTCTRL",
+        "topLeftFirst": "macro +KEY_LEFTCTRL KEY_C -KEY_LEFTCTRL",
+        "topLeftSecond": "macro +KEY_LEFTCTRL KEY_V -KEY_LEFTCTRL",
+        "topMiddleSmall": "macro +KEY_LEFTALT KEY_F2 -KEY_LEFTALT",
+        "wheelRight": "macro +KEY_LEFTCTRL +KEY_LEFTMETA KEY_RIGHT -KEY_LEFTMETA -KEY_LEFTCTRL",
+        "wheelLeft": "macro +KEY_LEFTCTRL +KEY_LEFTMETA KEY_LEFT -KEY_LEFTMETA -KEY_LEFTCTRL"
+      }
+    },
+    {
+      "name": "Cyberpunk 2077",
+      "shortName": "Cyberpunk",
+      "abbreviation": "cp",
+      "keywords": ["mprcp"],
+      "bindings": {
+        "left": "button 1",
+        "right": "button 2",
+        "middle": "button 3",
+        "leftSideFirst": "macro KEY_C",
+        "leftSideSecond": "macro KEY_M",
+        "leftSideFarDown": "macro KEY_F",
+        "topLeftFirst": "button 3",
+        "topLeftSecond": "macro KEY_X",
+        "topMiddleSmall": "button 3",
+        "wheelRight": "macro KEY_CAPSLOCK",
+        "wheelLeft": "macro KEY_CAPSLOCK"
       }
     }
   ]
