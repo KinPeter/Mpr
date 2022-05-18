@@ -1,9 +1,14 @@
 import * as path from 'path'
 import * as fs from 'fs'
-import { DESKTOP_FILES_FOLDER, ICON_ASSET_FOLDER, MPR_FOLDER_NAME } from './constants'
+import {
+  DESKTOP_FILES_FOLDER,
+  ICON_ASSET_FOLDER,
+  MAIN_SCRIPT_NAME,
+  MPR_FOLDER_NAME,
+} from './constants'
 import Logger from './logger'
 import { GameProfile } from './types'
-import { getGameScript, mpr0Script, mpr1Script, mprGetScript } from './sh-profile-script'
+import { getGameScript, getMpr0Script, getMpr1Script, getMprGetScript } from './sh-profile-script'
 import { gIcon } from './g-icon'
 import {
   getGameDesktopFile,
@@ -32,7 +37,7 @@ export function prepareFolder(homeDir: string): void {
 
 export function createMainScriptFile(content: string, homeDir: string): void {
   try {
-    const filename = path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr.sh')
+    const filename = path.resolve(homeDir, MPR_FOLDER_NAME, MAIN_SCRIPT_NAME)
     if (fs.existsSync(filename)) {
       fs.rmSync(filename)
     }
@@ -47,12 +52,22 @@ export function createMainScriptFile(content: string, homeDir: string): void {
 
 export function createProfileScriptFiles(profiles: GameProfile[], homeDir: string): void {
   try {
-    fs.writeFileSync(path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr.sh'), mprGetScript)
-    fs.writeFileSync(path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr-0.sh'), mpr0Script)
-    fs.writeFileSync(path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr-1.sh'), mpr1Script)
+    const mainScriptPath = path.resolve(homeDir, MPR_FOLDER_NAME, MAIN_SCRIPT_NAME)
+    fs.writeFileSync(
+      path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr.sh'),
+      getMprGetScript(mainScriptPath)
+    )
+    fs.writeFileSync(
+      path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr-0.sh'),
+      getMpr0Script(mainScriptPath)
+    )
+    fs.writeFileSync(
+      path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr-1.sh'),
+      getMpr1Script(mainScriptPath)
+    )
     profiles.forEach(({ abbreviation, isDefault }) => {
       if (isDefault) return
-      const script = getGameScript(abbreviation)
+      const script = getGameScript(abbreviation, mainScriptPath)
       const filename = path.resolve(homeDir, MPR_FOLDER_NAME, `mpr-${abbreviation}.sh`)
       fs.writeFileSync(filename, script)
     })
@@ -80,7 +95,7 @@ export function createDesktopFiles(profiles: GameProfile[], homeDir: string): vo
     if (fs.existsSync(profile0DesktopFile)) fs.rmSync(profile0DesktopFile)
     fs.writeFileSync(profile0DesktopFile, getProfile0DesktopFile(homeDir))
 
-    if (fs.existsSync(profile0DesktopFile)) fs.rmSync(profile1DesktopFile)
+    if (fs.existsSync(profile1DesktopFile)) fs.rmSync(profile1DesktopFile)
     fs.writeFileSync(profile1DesktopFile, getProfile1DesktopFile(homeDir))
 
     profiles.forEach(profile => {
@@ -115,6 +130,29 @@ export function copyIconFile(homeDir: string): void {
     logger.green(`Created icon file at ${iconFile}`)
   } catch (e) {
     logger.red('Could not generate icon file.')
+    logger.def(e)
+    process.exit(1)
+  }
+}
+
+export function updateBashRc(homeDir: string): void {
+  try {
+    const bashRcPath = path.resolve(homeDir, '.bashrc')
+    const bashRcContent = fs.readFileSync(bashRcPath).toString().split('\n')
+    const regex = new RegExp(/source\s.+(?=\.mpr\/mpr-main.sh)/)
+    if (!bashRcContent.some(line => regex.test(line))) {
+      bashRcContent.push(
+        '# Load mouse profiler scripts',
+        `source ${path.resolve(homeDir, MPR_FOLDER_NAME, MAIN_SCRIPT_NAME)}`
+      )
+      const newContent = bashRcContent.join('\n')
+      fs.writeFileSync(bashRcPath, newContent)
+      logger.green('Updated Bash config.')
+    } else {
+      logger.cyan('Bash config already includes the MPR script.')
+    }
+  } catch (e) {
+    logger.red('Could not update .bashrc')
     logger.def(e)
     process.exit(1)
   }

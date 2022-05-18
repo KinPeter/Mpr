@@ -95,7 +95,7 @@ function mpr-resetDefault {
     echo "ratbagctl $g502mouseName profile 0 button $i action set \${g502defaultProfile[$i]}"
   done
   echo "Default profile buttons configured"
-})\n`
+}\n`
     } else {
       content += `
 g502Profile${profile.shortName}=(

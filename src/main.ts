@@ -7,6 +7,7 @@ import {
   createMainScriptFile,
   createProfileScriptFiles,
   prepareFolder,
+  updateBashRc,
 } from './files'
 
 export function run() {
@@ -18,4 +19,5 @@ export function run() {
   createMainScriptFile(mainScriptContent, homeDir)
   createProfileScriptFiles(profiles, homeDir)
   createDesktopFiles(profiles, homeDir)
+  updateBashRc(homeDir)
 }

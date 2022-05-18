@@ -1,28 +1,34 @@
-export function getGameScript(abbreviation: string): string {
+export function getGameScript(abbreviation: string, mainScriptPath: string): string {
   return `#!/bin/bash
 
-source $HOME/code/linux/bash-mouse.sh
+source ${mainScriptPath}
 mpr ${abbreviation}
 notify-send "G502 Profile set to 1 ($(cat $HOME/.g502gameprofile))"
 `
 }
 
-export const mprGetScript = `#!/bin/bash
+export function getMprGetScript(mainScriptPath: string): string {
+  return `#!/bin/bash
 
-source $HOME/code/linux/bash-mouse.sh
+source ${mainScriptPath}
 notify-send "$(mpr)"
 `
+}
 
-export const mpr0Script = `#!/bin/bash
+export function getMpr0Script(mainScriptPath: string): string {
+  return `#!/bin/bash
 
-source $HOME/code/linux/bash-mouse.sh
+source ${mainScriptPath}
 mpr 0
 notify-send "G502 Profile set to 0 (Default)"
 `
+}
 
-export const mpr1Script = `#!/bin/bash
+export function getMpr1Script(mainScriptPath: string): string {
+  return `#!/bin/bash
 
-source $HOME/code/linux/bash-mouse.sh
+source ${mainScriptPath}
 mpr 1
 notify-send "G502 Profile set to 1 ($(cat $HOME/.g502gameprofile))"
 `
+}

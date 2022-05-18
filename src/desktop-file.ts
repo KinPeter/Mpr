@@ -4,8 +4,7 @@ export function getGameDesktopFile(
   { name, abbreviation, keywords }: GameProfile,
   homeDir: string
 ): string {
-  return `
-[Desktop Entry]
+  return `[Desktop Entry]
 Version=1.0
 Name=Mpr ${name}
 Icon=${homeDir}/.local/share/icons/g.svg
@@ -15,12 +14,11 @@ Type=Application
 Categories=Utilities;
 Keywords=${keywords.join(',')}
 Terminal=false
-  `
+`
 }
 
 export function getMprGetDesktopFile(homeDir: string): string {
-  return `
-[Desktop Entry]
+  return `[Desktop Entry]
 Version=1.0
 Name=Mpr
 Icon=${homeDir}/.local/share/icons/g.svg
@@ -30,13 +28,11 @@ Type=Application
 Categories=Utilities;
 Keywords=mprget
 Terminal=false
-
-  `
+`
 }
 
 export function getProfile0DesktopFile(homeDir: string): string {
-  return `
-[Desktop Entry]
+  return `[Desktop Entry]
 Version=1.0
 Name=Mpr 0
 Icon=${homeDir}/.local/share/icons/g.svg
@@ -46,12 +42,11 @@ Type=Application
 Categories=Utilities;
 Keywords=mpr0
 Terminal=false
-  `
+`
 }
 
 export function getProfile1DesktopFile(homeDir: string): string {
-  return `
-[Desktop Entry]
+  return `[Desktop Entry]
 Version=1.0
 Name=Mpr 1
 Icon=${homeDir}/.local/share/icons/g.svg
@@ -61,5 +56,5 @@ Type=Application
 Categories=Utilities;
 Keywords=mpr1
 Terminal=false  
-  `
+`
 }
