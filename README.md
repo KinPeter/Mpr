@@ -18,7 +18,7 @@ Alternatively (after install and set up) you can create an alias as well:
 alias mpr-generate='node ~/path/to/mpr/dist/index.js'
 ```
 
-This will generate the shell script files in the `~/.mpr` folder, and the desktop entries in the `.local/share/applications` folder.
+This will generate the shell script files in the `~/.mpr` folder, and the desktop entries in the `~/.local/share/applications` folder.
 
 Don't forget to log out / log in so Gnome can pick up the changes.
 
