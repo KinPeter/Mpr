@@ -55,21 +55,24 @@ export function createProfileScriptFiles(profiles: GameProfile[], homeDir: strin
     const mainScriptPath = path.resolve(homeDir, MPR_FOLDER_NAME, MAIN_SCRIPT_NAME)
     fs.writeFileSync(
       path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr.sh'),
-      getMprGetScript(mainScriptPath)
+      getMprGetScript(mainScriptPath),
+      { mode: 0o775 }
     )
     fs.writeFileSync(
       path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr-0.sh'),
-      getMpr0Script(mainScriptPath)
+      getMpr0Script(mainScriptPath),
+      { mode: 0o775 }
     )
     fs.writeFileSync(
       path.resolve(homeDir, MPR_FOLDER_NAME, 'mpr-1.sh'),
-      getMpr1Script(mainScriptPath)
+      getMpr1Script(mainScriptPath),
+      { mode: 0o775 }
     )
     profiles.forEach(({ abbreviation, isDefault }) => {
       if (isDefault) return
       const script = getGameScript(abbreviation, mainScriptPath)
       const filename = path.resolve(homeDir, MPR_FOLDER_NAME, `mpr-${abbreviation}.sh`)
-      fs.writeFileSync(filename, script)
+      fs.writeFileSync(filename, script, { mode: 0o775 })
     })
     logger.green('Game profile scripts generated.')
   } catch (e) {
