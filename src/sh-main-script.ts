@@ -44,9 +44,11 @@ function mpr-set {
   ratbagctl $g502mouseName profile active set $profile
   if [[ $profile == 0 ]]; then
     echo "G502 Profile set to $profile (Default)"
+    echo "0" > $HOME/.g502activeprofile
   else
     local game=$(<$HOME/.g502gameprofile)
     echo "G502 Profile set to $profile ($game)"
+    echo "1" > $HOME/.g502activeprofile
   fi
   return 0
 }
