@@ -94,7 +94,7 @@ function mpr-resetDefault {
   getMyMouseName
   for i in \${!g502defaultProfile[@]};
   do
-    echo "ratbagctl $g502mouseName profile 0 button $i action set \${g502defaultProfile[$i]}"
+    ratbagctl $g502mouseName profile 0 button $i action set \${g502defaultProfile[$i]}
   done
   echo "Default profile buttons configured"
 }\n`
